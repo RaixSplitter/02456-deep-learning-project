@@ -4,7 +4,7 @@
 
 PROJECT_NAME = src
 PYTHON_VERSION = 3.10
-PYTHON_INTERPRETER = python3
+PYTHON_INTERPRETER = python
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -19,19 +19,20 @@ create_environment:
 requirements:
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
+	$(PYTHON_INTERPRETER) -m pip install torch torchvision torchaudio
 	$(PYTHON_INTERPRETER) -m pip install -e .
 
 ## Install Python Dependencies for GPU CUDA 11.8
 requirements_gpu_cu118:
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
-	$(PYTHON_INTERPRETER) -m pip install -r requirements_gpu.txt
+	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 	$(PYTHON_INTERPRETER) -m pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 	$(PYTHON_INTERPRETER) -m pip install -e .
 
 ## Install Python Dependencies for GPU CUDA 12.1
 requirements_gpu_cu121:
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
-	$(PYTHON_INTERPRETER) -m pip install -r requirements_gpu.txt
+	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 	$(PYTHON_INTERPRETER) -m pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 	$(PYTHON_INTERPRETER) -m pip install -e .
 
@@ -44,23 +45,11 @@ clean:
 train:
 	$(PYTHON_INTERPRETER) $(PROJECT_NAME)/train_model.py hydra.job.chdir=False
 
-## Bulid docker image for training
-docker_build_train:
-	docker build -f dockerfiles/train_model.dockerfile . -t trainer:latest
 
-## Run docker image for training
-docker_run_train:
-	docker run --name trainer_experiment trainer:latest
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
 
-## Process raw data into processed data
-download_data:
-	dvc pull --force
-
-data: download_data
-	python3 $(PROJECT_NAME)/data/make_dataset.py
 
 #################################################################################
 # Documentation RULES                                                           #

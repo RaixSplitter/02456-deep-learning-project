@@ -1,3 +1,5 @@
+# Note that torch has to be manually installed from https://pytorch.org/get-started/locally/, or using the make commands in the Makefile
+
 numpy
 matplotlib
 tqdm
