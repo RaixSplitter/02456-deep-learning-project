@@ -160,3 +160,5 @@ cython_debug/
 #.idea/
 src/decision_boundary_comparison*
 /data
+src/demo.ipynb
+src/minx.ipynb
